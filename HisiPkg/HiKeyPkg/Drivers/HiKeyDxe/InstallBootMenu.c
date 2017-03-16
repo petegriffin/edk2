@@ -414,22 +414,7 @@ HiKeyDetectJumper (
   Status = gBS->LocateProtocol (&gEmbeddedGpioProtocolGuid, NULL, (VOID **)&Gpio);
   ASSERT_EFI_ERROR (Status);
 
-  Status = Gpio->Set (Gpio, DETECT_J15_FASTBOOT, GPIO_MODE_INPUT);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "%a: failed to set jumper as gpio input\n", __func__));
-    return;
-  }
-  Status = Gpio->Get (Gpio, DETECT_J15_FASTBOOT, &Value);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "%a: failed to get value from jumper\n", __func__));
-    return;
-  }
-  if (Value == 1) {
-    // Jump not connected on pin5-6 of J15
-    mBootIndex = 1;
-  } else {
-    mBootIndex = 0;
-  }
+  mBootIndex = 0;
 
   HiKeyTestLed (Gpio);
 }
